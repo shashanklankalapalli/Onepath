@@ -46,27 +46,27 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/colleges/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/services/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/services/*/evaluate").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/updates/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/service-centers/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/service-centres/**").permitAll()
-                        .requestMatchers("/api/chat/**").permitAll()
+                        // Public endpoints (both with and without /api prefix)
+                        .requestMatchers("/api/auth/**", "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/colleges/**", "/colleges/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/services/**", "/services/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/services/*/evaluate", "/services/*/evaluate").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/updates/**", "/updates/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/service-centers/**", "/api/service-centres/**",
+                                                         "/service-centers/**", "/service-centres/**").permitAll()
+                        .requestMatchers("/api/chat/**", "/chat/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         // Admin / College Admin protected mutation endpoints
-                        .requestMatchers(HttpMethod.POST, "/api/colleges/**").hasAnyRole("COLLEGE_ADMIN", "SUPER_ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/colleges/**").hasAnyRole("COLLEGE_ADMIN", "SUPER_ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/colleges/**").hasAnyRole("COLLEGE_ADMIN", "SUPER_ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/services/**").hasRole("SUPER_ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/services/**").hasRole("SUPER_ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/services/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/colleges/**", "/colleges/**").hasAnyRole("COLLEGE_ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/colleges/**", "/colleges/**").hasAnyRole("COLLEGE_ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/colleges/**", "/colleges/**").hasAnyRole("COLLEGE_ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/services/**", "/services/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/services/**", "/services/**").hasRole("SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/services/**", "/services/**").hasRole("SUPER_ADMIN")
                         // Authenticated user endpoints
-                        .requestMatchers("/api/checklists/**").authenticated()
-                        .requestMatchers("/api/documents/**").authenticated()
-                        .requestMatchers("/api/users/**").authenticated()
+                        .requestMatchers("/api/checklists/**", "/checklists/**").authenticated()
+                        .requestMatchers("/api/documents/**", "/documents/**").authenticated()
+                        .requestMatchers("/api/users/**", "/users/**").authenticated()
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )
@@ -76,7 +76,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
@@ -104,6 +103,8 @@ public class SecurityConfig {
                 "http://127.0.0.1:3000",
                 "http://*:5173",
                 "http://*:3000",
+                "https://*.vercel.app",
+                "https://onepath-ok2iitgsq-onepath2.vercel.app",
                 "*"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));

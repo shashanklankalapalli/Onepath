@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/api/service-centers", "/api/service-centres"})
+@RequestMapping({"/api/service-centers", "/api/service-centres", "/service-centers", "/service-centres"})
 public class ServiceCenterController {
 
     private final ServiceCenterService serviceCenterService;

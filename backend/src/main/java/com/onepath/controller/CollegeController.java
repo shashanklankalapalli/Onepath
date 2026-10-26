@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/colleges")
+@RequestMapping({"/api/colleges", "/colleges"})
 public class CollegeController {
 
     private final CollegeService collegeService;

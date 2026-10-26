@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/checklists")
+@RequestMapping({"/api/checklists", "/checklists"})
 public class ChecklistController {
 
     private final ChecklistService checklistService;

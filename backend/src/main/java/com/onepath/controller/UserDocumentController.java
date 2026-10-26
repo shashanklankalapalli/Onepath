@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/documents")
+@RequestMapping({"/api/documents", "/documents"})
 public class UserDocumentController {
 
     private final UserDocumentService userDocumentService;
