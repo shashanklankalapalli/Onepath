@@ -1,3 +1,4 @@
+
 # OnePath — Understand. Apply. Stay Updated.
 
 OnePath is a modern full-stack platform that simplifies complicated government, civic, educational, and institutional processes for students and young adults.
@@ -149,3 +150,7 @@ Never commit secrets to source control. Configure your secrets via environment v
 | `JWT_SECRET` | 256-bit Secret Key | Configurable in production |
 | `JWT_EXPIRATION_MS` | Token Validity (ms) | `86400000` (24 Hours) |
 | `VITE_API_BASE_URL` | Frontend API Target | `http://localhost:8080/api` |
+
+# Onepath
+OnePath simplifies complex procedures like passport applications, driving licences, scholarships, and college admissions. It offers eligibility checks, step-by-step guidance, document checklists, deadline reminders, and important updates, helping students and citizens complete processes easily without confusion.
+
