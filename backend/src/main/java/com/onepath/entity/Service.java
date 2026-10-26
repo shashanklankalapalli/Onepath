@@ -35,10 +35,10 @@ public class Service {
     @Column(columnDefinition = "TEXT")
     private String eligibility;
 
-    @Column(length = 150)
+    @Column(columnDefinition = "TEXT")
     private String timeline;
 
-    @Column(length = 150)
+    @Column(columnDefinition = "TEXT")
     private String fees;
 
     @Column(columnDefinition = "TEXT")

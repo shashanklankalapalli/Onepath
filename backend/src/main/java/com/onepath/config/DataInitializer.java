@@ -22,6 +22,7 @@ public class DataInitializer implements CommandLineRunner {
     private final com.onepath.repository.ServiceCenterRepository serviceCenterRepository;
     private final com.onepath.repository.UpdateRepository updateRepository;
     private final PasswordEncoder passwordEncoder;
+    private final org.springframework.jdbc.core.JdbcTemplate jdbcTemplate;
 
     @Value("${app.seed.sample-data:false}")
     private boolean seedSampleData;
@@ -32,17 +33,37 @@ public class DataInitializer implements CommandLineRunner {
             com.onepath.repository.ServiceRepository serviceRepository,
             com.onepath.repository.ServiceCenterRepository serviceCenterRepository,
             com.onepath.repository.UpdateRepository updateRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            org.springframework.jdbc.core.JdbcTemplate jdbcTemplate) {
         this.userRepository = userRepository;
         this.collegeRepository = collegeRepository;
         this.serviceRepository = serviceRepository;
         this.serviceCenterRepository = serviceCenterRepository;
         this.updateRepository = updateRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private void migrateSchemaIfNeeded() {
+        if (jdbcTemplate == null) {
+            return;
+        }
+        try {
+            log.info("Ensuring database columns for services and college_processes support long text...");
+            jdbcTemplate.execute("ALTER TABLE services ALTER COLUMN fees TYPE TEXT");
+            jdbcTemplate.execute("ALTER TABLE services ALTER COLUMN timeline TYPE TEXT");
+            jdbcTemplate.execute("ALTER TABLE college_processes ALTER COLUMN fees TYPE TEXT");
+            jdbcTemplate.execute("ALTER TABLE college_processes ALTER COLUMN timeline TYPE TEXT");
+            log.info("Database schema migration completed successfully (columns 'fees' and 'timeline' are TEXT).");
+        } catch (Exception e) {
+            log.warn("Automatic column type migration notice (table might not exist yet or already altered): {}", e.getMessage());
+        }
     }
 
     @Override
     public void run(String... args) {
+        migrateSchemaIfNeeded();
+
         // Initialize default administrator accounts if none exist
         if (!userRepository.existsByEmail("admin@onepath.org")) {
             User admin = new User(

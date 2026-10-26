@@ -36,10 +36,10 @@ public class CollegeProcess {
     @Column(columnDefinition = "TEXT")
     private String eligibility;
 
-    @Column(length = 150)
+    @Column(columnDefinition = "TEXT")
     private String timeline; // e.g. "3 - 5 business days", "June 1 - July 15"
 
-    @Column(length = 150)
+    @Column(columnDefinition = "TEXT")
     private String fees; // e.g. "₹500 application fee" or "Free"
 
     @Column(length = 50)
