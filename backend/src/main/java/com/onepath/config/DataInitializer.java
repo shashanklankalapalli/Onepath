@@ -44,7 +44,7 @@ public class DataInitializer implements CommandLineRunner {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private void migrateSchemaIfNeeded() {
+    void migrateSchemaIfNeeded() {
         if (jdbcTemplate == null) {
             return;
         }
@@ -57,6 +57,53 @@ public class DataInitializer implements CommandLineRunner {
             log.info("Database schema migration completed successfully (columns 'fees' and 'timeline' are TEXT).");
         } catch (Exception e) {
             log.warn("Automatic column type migration notice (table might not exist yet or already altered): {}", e.getMessage());
+        }
+    }
+
+    void seedVitApDataIfNeeded() {
+        if (jdbcTemplate == null) {
+            return;
+        }
+        try {
+            Integer collegeCount = 0;
+            Integer processCount = 0;
+            Integer serviceCount = 0;
+
+            try {
+                collegeCount = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM colleges WHERE short_name = 'VIT' OR name ILIKE '%Vellore institute of technology%'",
+                    Integer.class
+                );
+                processCount = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM college_processes cp JOIN colleges c ON cp.college_id = c.id WHERE (c.short_name = 'VIT' OR c.name ILIKE '%Vellore institute of technology%') AND cp.title = 'Student Reporting & Document Verification (B.Tech / UG Admissions)'",
+                    Integer.class
+                );
+                serviceCount = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM services WHERE slug = 'vit-ap-reporting'",
+                    Integer.class
+                );
+            } catch (Exception queryEx) {
+                log.warn("Could not query existing VIT-AP records (database tables may be initializing): {}", queryEx.getMessage());
+            }
+
+            if (collegeCount != null && collegeCount > 0 && processCount != null && processCount > 0 && serviceCount != null && serviceCount > 0) {
+                log.info("VIT-AP institution, reporting process, and dual-access civic service already exist in database. Preserving existing records without modification.");
+                return;
+            }
+
+            log.info("Seeding VIT-AP institutional reporting process and dual-access civic service into PostgreSQL database...");
+            org.springframework.core.io.Resource resource = new org.springframework.core.io.ClassPathResource("seed_vit_ap_reporting.sql");
+            if (!resource.exists()) {
+                log.warn("seed_vit_ap_reporting.sql not found on classpath!");
+                return;
+            }
+            try (java.io.InputStream is = resource.getInputStream()) {
+                String sql = new String(is.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+                jdbcTemplate.execute(sql);
+                log.info("VIT-AP institutional reporting process and dual-access civic service seeded successfully into PostgreSQL database.");
+            }
+        } catch (Exception e) {
+            log.error("Error during VIT-AP data seeding: {}", e.getMessage(), e);
         }
     }
 
@@ -1250,9 +1297,10 @@ public class DataInitializer implements CommandLineRunner {
         // Seed verified government updates and circulars
         seedPlatformUpdates();
 
-        // NOTE: College and CollegeProcess tables are intentionally KEPT EMPTY.
-        // As requested by user specifications: "The CollegeProcess table must initially be empty."
-        log.info("OnePath system initialized successfully. College processes table is empty as expected.");
+        // Ensure verified VIT-AP institution, reporting process, and dual-access civic service exist in database
+        seedVitApDataIfNeeded();
+
+        log.info("OnePath system initialized successfully.");
     }
 
     private void seedServiceCenters() {
