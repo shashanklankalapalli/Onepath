@@ -56,6 +56,7 @@ class DataInitializerTest {
         verify(jdbcTemplate).execute("ALTER TABLE services ALTER COLUMN timeline TYPE TEXT");
         verify(jdbcTemplate).execute("ALTER TABLE college_processes ALTER COLUMN fees TYPE TEXT");
         verify(jdbcTemplate).execute("ALTER TABLE college_processes ALTER COLUMN timeline TYPE TEXT");
+        verify(jdbcTemplate).execute(contains("CREATE TABLE IF NOT EXISTS mentor_requests"));
     }
 
     @Test

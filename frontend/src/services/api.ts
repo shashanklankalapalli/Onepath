@@ -16,6 +16,9 @@ import {
   UserDocument,
   ChatRequest,
   ChatResponse,
+  MentorRequest,
+  MentorRequestCreate,
+  MentorStatusUpdate,
 } from '../types';
 
 export const authService = {
@@ -224,4 +227,32 @@ export const userDocumentsApi = {
     await apiClient.delete(`/documents/${id}`);
   },
 };
+
+export const mentorApi = {
+  submitRequest: async (data: MentorRequestCreate): Promise<MentorRequest> => {
+    const res = await apiClient.post<MentorRequest>('/mentor-requests', data);
+    return res.data;
+  },
+  getAllRequests: async (search?: string, status?: string, process?: string): Promise<MentorRequest[]> => {
+    const params: Record<string, string> = {};
+    if (search && search.trim()) params.search = search.trim();
+    if (status && status !== 'ALL') params.status = status;
+    if (process && process !== 'ALL') params.process = process;
+    const res = await apiClient.get<MentorRequest[]>('/mentor-requests', { params });
+    return res.data;
+  },
+  getMyRequests: async (): Promise<MentorRequest[]> => {
+    const res = await apiClient.get<MentorRequest[]>('/mentor-requests/my');
+    return res.data;
+  },
+  getRequestById: async (id: number): Promise<MentorRequest> => {
+    const res = await apiClient.get<MentorRequest>(`/mentor-requests/${id}`);
+    return res.data;
+  },
+  updateStatus: async (id: number, data: MentorStatusUpdate): Promise<MentorRequest> => {
+    const res = await apiClient.patch<MentorRequest>(`/mentor-requests/${id}/status`, data);
+    return res.data;
+  },
+};
+
 

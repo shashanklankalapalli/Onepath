@@ -12,6 +12,8 @@ import {
   Menu,
   X,
   Layers,
+  Sparkles,
+  Shield,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -28,10 +30,13 @@ export const Navbar: React.FC = () => {
     { name: 'Home', path: '/', icon: Compass },
     { name: 'Services', path: '/services', icon: Layers },
     { name: 'College Dashboard', path: '/colleges', icon: GraduationCap },
+    { name: 'Hire a Mentor', path: '/mentor', icon: Sparkles },
     { name: 'My Documents', path: '/my-documents', icon: FileCheck2 },
     { name: 'Updates', path: '/updates', icon: Bell },
     { name: 'Service Centres', path: '/service-centers', icon: MapPin },
   ];
+
+  const isAdmin = user?.role === 'SUPER_ADMIN' || user?.role === 'COLLEGE_ADMIN';
 
   return (
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
@@ -81,6 +86,15 @@ export const Navbar: React.FC = () => {
           <div className="hidden lg:flex items-center space-x-3">
             {isAuthenticated && user ? (
               <div className="flex items-center space-x-3 pl-3 border-l border-slate-200">
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Admin Hub</span>
+                  </Link>
+                )}
                 <Link
                   to="/profile"
                   className="flex items-center space-x-2 py-1.5 px-3 rounded-lg hover:bg-slate-100 text-slate-700 transition"
@@ -161,6 +175,16 @@ export const Navbar: React.FC = () => {
           <div className="pt-3 mt-2 border-t border-slate-200">
             {isAuthenticated && user ? (
               <div className="space-y-2">
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200"
+                  >
+                    <Shield className="w-5 h-5 text-amber-600" />
+                    <span>Admin Dashboard</span>
+                  </Link>
+                )}
                 <Link
                   to="/profile"
                   onClick={() => setMobileMenuOpen(false)}

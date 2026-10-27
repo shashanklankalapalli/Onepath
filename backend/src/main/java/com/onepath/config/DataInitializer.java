@@ -54,7 +54,23 @@ public class DataInitializer implements CommandLineRunner {
             jdbcTemplate.execute("ALTER TABLE services ALTER COLUMN timeline TYPE TEXT");
             jdbcTemplate.execute("ALTER TABLE college_processes ALTER COLUMN fees TYPE TEXT");
             jdbcTemplate.execute("ALTER TABLE college_processes ALTER COLUMN timeline TYPE TEXT");
-            log.info("Database schema migration completed successfully (columns 'fees' and 'timeline' are TEXT).");
+            jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS mentor_requests (" +
+                    "id BIGSERIAL PRIMARY KEY, " +
+                    "request_id VARCHAR(30) NOT NULL UNIQUE, " +
+                    "user_id BIGINT, " +
+                    "full_name VARCHAR(120) NOT NULL, " +
+                    "email VARCHAR(150) NOT NULL, " +
+                    "department_or_process VARCHAR(150) NOT NULL, " +
+                    "problem_description TEXT NOT NULL, " +
+                    "desired_outcome TEXT NOT NULL, " +
+                    "preferred_contact_method VARCHAR(30) NOT NULL, " +
+                    "phone_number VARCHAR(30), " +
+                    "additional_info TEXT, " +
+                    "status VARCHAR(30) NOT NULL DEFAULT 'NEW', " +
+                    "admin_notes TEXT, " +
+                    "created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(), " +
+                    "updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW())");
+            log.info("Database schema migration completed successfully (columns 'fees' and 'timeline' are TEXT, 'mentor_requests' table verified).");
         } catch (Exception e) {
             log.warn("Automatic column type migration notice (table might not exist yet or already altered): {}", e.getMessage());
         }

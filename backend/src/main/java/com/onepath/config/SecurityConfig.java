@@ -63,6 +63,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/services/**", "/services/**").hasRole("SUPER_ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/services/**", "/services/**").hasRole("SUPER_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/services/**", "/services/**").hasRole("SUPER_ADMIN")
+                        // Mentor assistance endpoints
+                        .requestMatchers(HttpMethod.POST, "/api/mentor-requests", "/mentor-requests").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/mentor-requests/my", "/mentor-requests/my").authenticated()
+                        .requestMatchers("/api/mentor-requests/**", "/mentor-requests/**").hasAnyRole("COLLEGE_ADMIN", "SUPER_ADMIN")
                         // Authenticated user endpoints
                         .requestMatchers("/api/checklists/**", "/checklists/**").authenticated()
                         .requestMatchers("/api/documents/**", "/documents/**").authenticated()

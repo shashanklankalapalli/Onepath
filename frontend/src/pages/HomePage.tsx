@@ -41,7 +41,7 @@ export const HomePage: React.FC = () => {
             OnePath simplifies complicated government, civic, educational, and institutional procedures into clear, step-by-step guidance tailored for young adults.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
             <Link
               to="/services"
               className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-xl text-base font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-lg shadow-brand-500/25 transition transform hover:-translate-y-0.5"
@@ -56,6 +56,14 @@ export const HomePage: React.FC = () => {
             >
               <GraduationCap className="w-5 h-5 mr-2 text-brand-600" />
               College Documentation
+            </Link>
+
+            <Link
+              to="/mentor"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-xl text-base font-bold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-200 shadow-sm transition hover:border-brand-300"
+            >
+              <Sparkles className="w-4 h-4 mr-2 text-brand-600" />
+              Hire a Mentor
             </Link>
           </div>
         </div>
@@ -137,6 +145,44 @@ export const HomePage: React.FC = () => {
             <p className="text-sm text-slate-600 leading-relaxed">
               Locate physical facilitation counters, civic centers, and verification desks in your locality.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Mentor Assistance Spotlight Banner */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl bg-gradient-to-r from-indigo-900 via-brand-900 to-slate-950 text-white p-8 sm:p-12 relative overflow-hidden shadow-xl border border-indigo-500/20">
+          <div className="relative z-10 max-w-2xl space-y-4">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 text-xs font-bold border border-brand-400/30">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Personalized 1-on-1 Support</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+              Confused with a process? <br />
+              <span className="text-brand-300">Hire your mentor now!</span>
+            </h2>
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+              Facing tricky document rejections, confusing affidavit specifications, or complex admissions and passport rules?
+              Request dedicated personalized assistance. Our coordinators review your paperwork, clarify official requirements, and help you achieve your desired outcome without stress.
+            </p>
+            <div className="pt-2 flex flex-wrap gap-4">
+              <Link
+                to="/mentor"
+                className="inline-flex items-center px-6 py-3.5 rounded-xl bg-white text-slate-900 font-bold hover:bg-slate-100 transition shadow-lg shadow-black/20"
+              >
+                Hire a Mentor Today
+                <ArrowRight className="w-4 h-4 ml-2 text-brand-600" />
+              </Link>
+              <Link
+                to="/services"
+                className="inline-flex items-center px-6 py-3.5 rounded-xl bg-white/10 text-white font-semibold hover:bg-white/20 border border-white/20 transition"
+              >
+                Explore Self-Help Guides
+              </Link>
+            </div>
+          </div>
+          <div className="hidden lg:block absolute -right-8 -bottom-8 opacity-10 pointer-events-none">
+            <Sparkles className="w-96 h-96 text-white" />
           </div>
         </div>
       </section>

@@ -57,6 +57,11 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link to="/mentor" className="text-brand-300 hover:text-white font-semibold transition">
+                  Hire a Mentor
+                </Link>
+              </li>
+              <li>
                 <Link to="/my-documents" className="hover:text-white transition">
                   Document Checklist
                 </Link>

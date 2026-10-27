@@ -257,3 +257,40 @@ export interface UserDocument {
   updatedAt: string;
 }
 
+export type MentorRequestStatus = 'NEW' | 'CONTACTED' | 'ASSIGNED' | 'COMPLETED';
+
+export interface MentorRequestCreate {
+  fullName: string;
+  email: string;
+  departmentOrProcess: string;
+  problemDescription: string;
+  desiredOutcome: string;
+  preferredContactMethod: 'Phone call' | 'WhatsApp' | 'Email' | string;
+  phoneNumber?: string;
+  additionalInfo?: string;
+}
+
+export interface MentorRequest {
+  id: number;
+  requestId: string;
+  userId?: number;
+  fullName: string;
+  email: string;
+  departmentOrProcess: string;
+  problemDescription: string;
+  desiredOutcome: string;
+  preferredContactMethod: string;
+  phoneNumber?: string;
+  additionalInfo?: string;
+  status: MentorRequestStatus;
+  adminNotes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MentorStatusUpdate {
+  status: MentorRequestStatus;
+  adminNotes?: string;
+}
+
+

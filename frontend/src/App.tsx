@@ -20,6 +20,8 @@ import { RegisterPage } from './pages/RegisterPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ManageCollegePage } from './pages/ManageCollegePage';
 import { ManageProcessPage } from './pages/ManageProcessPage';
+import { MentorPage } from './pages/MentorPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
 
 export const App: React.FC = () => {
   return (
@@ -42,6 +44,8 @@ export const App: React.FC = () => {
             <Route path="service-centers" element={<ServiceCentersPage />} />
             <Route path="service-centres" element={<ServiceCentersPage />} />
             <Route path="my-documents" element={<MyDocumentsPage />} />
+            <Route path="mentor" element={<MentorPage />} />
+            <Route path="mentor-assistance" element={<Navigate to="/mentor" replace />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
 
@@ -52,6 +56,8 @@ export const App: React.FC = () => {
 
             {/* Admin Protected Routes */}
             <Route element={<ProtectedRoute allowedRoles={['COLLEGE_ADMIN', 'SUPER_ADMIN']} />}>
+              <Route path="admin" element={<AdminDashboardPage />} />
+              <Route path="admin/mentor-requests" element={<AdminDashboardPage />} />
               <Route path="colleges/manage" element={<ManageCollegePage />} />
               <Route path="colleges/:collegeId/processes/new" element={<ManageProcessPage />} />
               <Route path="colleges/:collegeId/processes/:processId/edit" element={<ManageProcessPage />} />
